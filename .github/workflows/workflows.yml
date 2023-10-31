@@ -19,8 +19,12 @@ jobs:
         java-version: 11
         distribution: 'adopt'
 
-    - name: Build with Gradle
-      run: ./gradlew build
+    - name: Install Gradle
+      run: |
+        wget https://services.gradle.org/distributions/gradle-x.y.z-bin.zip
+        unzip gradle-x.y.z-bin.zip
+        export GRADLE_HOME=$PWD/gradle-x.y.z
+        export PATH=$GRADLE_HOME/bin:$PATH
 
     - name: Deploy to NAS
       run: |
