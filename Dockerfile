@@ -11,6 +11,7 @@ COPY . /app
 RUN apt-get update && apt-get install -y gradle
 
 # 애플리케이션 빌드 (예: Gradle 빌드)
+RUN chmod +x ./gradlew
 RUN ./gradlew build
 
 # 컨테이너 내에서 사용할 포트 노출
