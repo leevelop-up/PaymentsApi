@@ -23,7 +23,7 @@ jobs:
       run: |
         wget https://services.gradle.org/distributions/gradle-8.3-bin.zip
         unzip gradle-8.3-bin.zip
-        export GRADLE_HOME=$PWD/gradle-x.y.z
+        export GRADLE_HOME=$PWD/gradle-8.3
         export PATH=$GRADLE_HOME/bin:$PATH
 
     - name: Deploy to NAS
