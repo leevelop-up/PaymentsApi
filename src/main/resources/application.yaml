@@ -1,0 +1,11 @@
+spring:
+  jpa:
+    show-sql: true
+
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
+jwt:
+  issuer: merong2969
+  secret_key: qpwoeirut019234
