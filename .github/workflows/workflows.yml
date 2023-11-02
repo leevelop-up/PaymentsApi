@@ -34,6 +34,6 @@ jobs:
     #     docker build -t paymentsapi:1.0 .
 
     #     # Synology NAS SSH 주소와 포트를 사용하여 Docker 이미지를 전송하고 실행
-    #     ssh -p 2922 merong2969@leevelop.com 'docker load -i -' < <(docker save paymentsapi:1.0)
-    #     ssh -p 2922 merong2969@leevelop.com 'docker run -d -p 9090:9090 paymentsapi:1.0'
+    #     ssh -p 22 merong2969@leevelop.com 'docker load -i -' < <(docker save paymentsapi:1.0)
+    #     ssh -p 22 merong2969@leevelop.com 'docker run -d -p 9090:9090 paymentsapi:1.0'
 
