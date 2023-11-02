@@ -29,5 +29,5 @@ jobs:
     - name: Deploy to NAS
       run: |
         docker build -t paymentsapi:1.0 .
-        docker save paymentsapi:1.0 | ssh user@nas_ip 'docker load'
-        ssh user@nas_ip 'docker run -d -p 9090:9090 paymentsapi:1.0'
+        docker save paymentsapi:1.0 | ssh 2922 'docker load'
+        ssh 2922 'docker run -d -p 9090:9090 paymentsapi:1.0'
