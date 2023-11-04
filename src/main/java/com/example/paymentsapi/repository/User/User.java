@@ -1,8 +1,10 @@
 package com.example.paymentsapi.repository.User;
 
 import lombok.*;
+import org.springframework.format.datetime.DateFormatter;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -26,7 +28,7 @@ public class User {
     @Column(name="user_companycode")
     private Integer companyCode;
     @Column(name="user_joindate")
-    private Integer joinDate;
+    private LocalDateTime joinDate;
 
 
 }
