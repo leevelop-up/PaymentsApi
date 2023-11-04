@@ -1,6 +1,6 @@
 package com.example.paymentsapi.config;
 
-import com.example.paymentsapi.web.filters.dto.UserResponseDto;
+import com.example.paymentsapi.service.dto.UserResponseDto;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

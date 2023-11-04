@@ -1,4 +1,4 @@
-package com.example.paymentsapi.web.filters.dto;
+package com.example.paymentsapi.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
