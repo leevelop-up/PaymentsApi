@@ -18,6 +18,8 @@ import java.time.LocalDateTime;
 public class Company {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="cd_companyno")
+    private Integer companyCode;
 
     @Column(name="cd_companyname")
     private String companyName;
