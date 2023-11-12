@@ -34,7 +34,7 @@ public class ProduceKeyController {
     }
 
     @ApiOperation("키발급 기능")
-    @PostMapping(value = "/key", consumes = "application/json")
+    @PostMapping(value = "/key")
     public ResponseEntity<ResultDto<Void>> ProduceKey(Integer CompanyCode){
 
         //회사 코드값을 받아서 함께 입력
