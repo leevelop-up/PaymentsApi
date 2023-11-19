@@ -1,5 +1,5 @@
 # 자사몰 결제 API 시스템
-
+[![CI/CD for PaymentsApi](https://github.com/leevelop-up/PaymentsApi/actions/workflows/workflows.yml/badge.svg)](https://github.com/leevelop-up/PaymentsApi/actions/workflows/workflows.yml)
 ## 소개
 
 자사몰 간편결제를 위한 결제대행 api
