@@ -9,3 +9,10 @@ spring:
 jwt:
   issuer: merong2969
   secret_key: qpwoeirut019234
+
+
+
+logging:
+  level:
+    org.hibernate.type: trace
+    com.app: debug

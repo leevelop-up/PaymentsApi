@@ -2,8 +2,11 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '2.7.18-SNAPSHOT'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
+	id 'war'
 }
-
+bootWar {
+	enabled = true
+}
 group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 
@@ -24,6 +27,7 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-tomcat'
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client'

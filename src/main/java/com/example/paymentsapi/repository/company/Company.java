@@ -1,11 +1,10 @@
 package com.example.paymentsapi.repository.company;
 
 
+import com.example.paymentsapi.repository.Card.CardInfo;
 import lombok.*;
 
 import javax.persistence.*;
-import java.lang.annotation.Target;
-import java.text.DateFormat;
 import java.time.LocalDateTime;
 
 @Getter
@@ -26,5 +25,9 @@ public class Company {
 
     @Column(name="cd_joindate")
     private LocalDateTime joinDate;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "card_no", referencedColumnName = "card_no")
+    private CardInfo cardInfo;
 
 }
