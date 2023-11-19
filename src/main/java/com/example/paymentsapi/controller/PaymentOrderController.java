@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collections;
 import java.util.List;
 
 @RestController
@@ -21,13 +20,11 @@ import java.util.List;
 @RequestMapping("/api/service")
 public class PaymentOrderController {
     private final PaymentOrderService paymentOrderService;
-    @ApiOperation("주문")
+    @ApiOperation(value="카드결제 진행")
     @PostMapping(value = "/company", consumes = "application/json")
     public List<Order> OrderPayment(@RequestBody OrderStatusDto orderStatusDto){
 
         List<Order> resultData =  paymentOrderService.OrderInfoSave(orderStatusDto);
-
-
         return resultData;
     }
 

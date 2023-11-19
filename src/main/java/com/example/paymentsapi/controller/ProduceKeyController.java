@@ -21,13 +21,12 @@ public class ProduceKeyController {
     private final ProduceKeyService produceKeyService;
 
 
-    @ApiOperation("키발급 기능")
+    @ApiOperation("회사 등록")
     @PostMapping(value = "/company", consumes = "application/json")
     public ResponseEntity<ResultDto<Void>> ProduceCompany(String Company){
 
         CommonDto InsertCompany = produceKeyService.insertCompany(Company);
         //TODO: 담당자 아이디 추가
-
 
         ResultDto<Void> result  = ResultDto.in(InsertCompany.getStatus(), InsertCompany.getMessage());
         return ResponseEntity.status(InsertCompany.getHttpStatus()).body(result);
