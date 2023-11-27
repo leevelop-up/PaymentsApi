@@ -1,5 +1,7 @@
 package com.example.paymentsapi.service;
 
+import com.example.paymentsapi.repository.Card.CardInfo;
+import com.example.paymentsapi.repository.Card.CardRepository;
 import com.example.paymentsapi.repository.company.Company;
 import com.example.paymentsapi.repository.company.CompanyRepository;
 import com.example.paymentsapi.repository.serialkey.Serialkey;
@@ -18,6 +20,7 @@ public class ProduceKeyService {
 
     private final CompanyRepository companyRepository;
     private final SerialkeyRepository serialkeyRepository;
+    private final CardRepository cardRepository;
 
     private static final String SUCCESS_MESSAGE = "성공";
     private static final String DUPLICATE_COMPANY_MESSAGE = "회사명이 중복되어있습니다.";
@@ -98,5 +101,35 @@ public class ProduceKeyService {
         }
 
         return resultStringBuilder.toString();
+    }
+
+    public CommonDto insertCard(String cardName) {
+        String existingCompany = cardRepository.findCardInfoBycardNameKR(cardName);
+
+        if (existingCompany.isEmpty()) {
+            return CommonDto.builder()
+                    .message(DUPLICATE_COMPANY_MESSAGE)
+                    .status("fail")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
+                    .data("")
+                    .build();
+        }
+// 한글 카드사 이름으로 영어 카드사 이름 찾기
+        String cardNameEN = CardInfo.getEnglishName(cardName);
+
+        CardInfo newCardName = CardInfo.builder()
+                .cardNameEN(cardNameEN)
+                .cardNameKR(cardName)
+                .build();
+
+        cardRepository.save(newCardName);
+
+        return CommonDto.builder()
+                .message(SUCCESS_MESSAGE)
+                .status("success")
+                .httpStatus(HttpStatus.OK)
+                .data("")
+                .build();
+
     }
 }

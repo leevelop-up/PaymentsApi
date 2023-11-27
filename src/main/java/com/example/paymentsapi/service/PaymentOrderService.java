@@ -67,7 +67,7 @@ public class PaymentOrderService {
             StateMsg = DUPLICATED_ORDER_ID_MSG;
         }
 
-        if (cardRepository.findByCardNameEN(orderStatusDto.getPaymentMethod()).isEmpty() || orderStatusDto.getPaymentMethod().isEmpty()) {
+        if (cardRepository.findCardInfoBycardNameEN(orderStatusDto.getPaymentMethod()).isEmpty() || orderStatusDto.getPaymentMethod().isEmpty()) {
             StateCode = INVALID_CARD_COMPANY_CODE;
             StateMsg = INVALID_CARD_COMPANY_MSG;
         }

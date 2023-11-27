@@ -44,5 +44,16 @@ public class ProduceKeyController {
         return ResponseEntity.status(InsertKey.getHttpStatus()).body(result);
     }
 
+    @ApiOperation("카드 등록")
+    @PostMapping(value = "/company", consumes = "application/json")
+    public ResponseEntity<ResultDto<Void>> RegistryCard(String CardName){
+
+        CommonDto InsertCompany = produceKeyService.insertCard(CardName);
+        //TODO: 담당자 아이디 추가
+
+        ResultDto<Void> result  = ResultDto.in(InsertCompany.getStatus(), InsertCompany.getMessage());
+        return ResponseEntity.status(InsertCompany.getHttpStatus()).body(result);
+    }
+
 
 }
