@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -28,7 +29,6 @@ public class ProduceKeyService {
     private static final String KEY_ISSUE_FAIL_MESSAGE = "키발급 실패";
 
     public CommonDto insertCompany(String companyName) {
-        // 회사명 중복 체크
         Optional<Company> existingCompany = companyRepository.findByCompanyName(companyName);
 
         if (existingCompany.isPresent()) {
@@ -58,63 +58,51 @@ public class ProduceKeyService {
     public CommonDto insertKey(Integer companyCode) {
         Optional<Company> company = companyRepository.findById(companyCode);
 
-        String message;
-        String status;
-
         if (!company.isPresent()) {
-            // 키 발급
-            String generatedKey = generateRandomKey();
+            String generatedKey = generateSecureRandomKey();
             Serialkey serialkey = Serialkey.builder()
                     .serialKey(generatedKey)
                     .companyCode(companyCode)
                     .build();
             serialkeyRepository.save(serialkey);
 
-            message = KEY_ISSUE_SUCCESS_MESSAGE;
-            status = "success";
+            return CommonDto.builder()
+                    .message(KEY_ISSUE_SUCCESS_MESSAGE)
+                    .status("success")
+                    .data("")
+                    .build();
         } else {
-            // 해당 코드에 키값이 있는 경우 fail
-            message = KEY_ISSUE_FAIL_MESSAGE;
-            status = "fail";
+            return CommonDto.builder()
+                    .message(KEY_ISSUE_FAIL_MESSAGE)
+                    .status("fail")
+                    .data("")
+                    .build();
         }
-
-        return CommonDto.builder()
-                .message(message)
-                .status(status)
-                .data("")
-                .build();
-    }
-
-    private String generateRandomKey() {
-        String inputString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
-        List<Character> charList = new ArrayList<>();
-
-        for (char c : inputString.toCharArray()) {
-            charList.add(c);
-        }
-
-        Collections.shuffle(charList);
-
-        StringBuilder resultStringBuilder = new StringBuilder();
-        for (char c : charList) {
-            resultStringBuilder.append(c);
-        }
-
-        return resultStringBuilder.toString();
     }
 
     public CommonDto insertCard(String cardName) {
-        String existingCompany = cardRepository.findCardInfoBycardNameKR(cardName);
-
-        if (existingCompany.isEmpty()) {
+        System.out.println("Received cardName: " + cardName);
+        if (cardName == null) {
             return CommonDto.builder()
-                    .message(DUPLICATE_COMPANY_MESSAGE)
+                    .message("카드 이름이 없습니다.") // Update the message for null cardName
                     .status("fail")
                     .httpStatus(HttpStatus.BAD_REQUEST)
                     .data("")
                     .build();
         }
-// 한글 카드사 이름으로 영어 카드사 이름 찾기
+
+        String existingCompany = cardRepository.findCardInfoBycardNameKR(cardName);
+        System.out.println("Received existingCompany: " + existingCompany);
+        if (existingCompany != null) {
+                return CommonDto.builder()
+                        .message("카드 이름이 이미 결제 시스템에 존재합니다.")
+                        .status("fail")
+                        .httpStatus(HttpStatus.BAD_REQUEST)
+                        .data("")
+                        .build();
+
+        }
+
         String cardNameEN = CardInfo.getEnglishName(cardName);
 
         CardInfo newCardName = CardInfo.builder()
@@ -128,8 +116,25 @@ public class ProduceKeyService {
                 .message(SUCCESS_MESSAGE)
                 .status("success")
                 .httpStatus(HttpStatus.OK)
-                .data("")
+                .data(cardName)
                 .build();
+    }
 
+    private String generateSecureRandomKey() {
+        String inputString = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        List<Character> charList = new ArrayList<>();
+
+        for (char c : inputString.toCharArray()) {
+            charList.add(c);
+        }
+
+        Collections.shuffle(charList, new SecureRandom());
+
+        StringBuilder resultStringBuilder = new StringBuilder();
+        for (char c : charList) {
+            resultStringBuilder.append(c);
+        }
+
+        return resultStringBuilder.toString();
     }
 }

@@ -21,7 +21,7 @@ import java.util.List;
 public class PaymentOrderController {
     private final PaymentOrderService paymentOrderService;
     @ApiOperation(value="카드결제 진행")
-    @PostMapping(value = "/company", consumes = "application/json")
+    @PostMapping(value = "/order", consumes = "application/json")
     public List<Order> OrderPayment(@RequestBody OrderStatusDto orderStatusDto){
 
         List<Order> resultData =  paymentOrderService.OrderInfoSave(orderStatusDto);

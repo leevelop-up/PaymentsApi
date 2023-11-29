@@ -34,6 +34,10 @@ public class CardInfo {
         cardNameMapping.put("국민", "KB");
         cardNameMapping.put("신한", "Shinhan");
         cardNameMapping.put("삼성", "Samsung");
+        cardNameMapping.put("카카오페이", "Kakaopay");
+        cardNameMapping.put("네이버페이", "NaverPay");
+        cardNameMapping.put("우리", "Woori");
+
     }
 
     public static String getEnglishName(String koreanName) {
