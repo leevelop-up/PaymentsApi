@@ -1,5 +1,6 @@
 package com.example.paymentsapi.controller;
 
+import com.example.paymentsapi.repository.Card.CardInfo;
 import com.example.paymentsapi.service.ProduceKeyService;
 import com.example.paymentsapi.web.dto.CommonDto;
 import com.example.paymentsapi.web.dto.ResultDto;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -22,7 +24,7 @@ public class ProduceKeyController {
 
 
     @ApiOperation("회사 등록")
-    @PostMapping(value = "/company", consumes = "application/json")
+    @PostMapping(value = "/company")
     public ResponseEntity<ResultDto<Void>> ProduceCompany(String Company){
 
         CommonDto InsertCompany = produceKeyService.insertCompany(Company);
@@ -45,14 +47,14 @@ public class ProduceKeyController {
     }
 
     @ApiOperation("카드 등록")
-    @PostMapping(value = "/company", consumes = "application/json")
-    public ResponseEntity<ResultDto<Void>> RegistryCard(String CardName){
+    @PostMapping(value = "/inserCard")
+    public ResponseEntity<ResultDto<Void>> RegistryCard(@RequestBody CardInfo cardRequest){
 
-        CommonDto InsertCompany = produceKeyService.insertCard(CardName);
+        CommonDto InsertCard = produceKeyService.insertCard(cardRequest.getCardNameKR());
         //TODO: 담당자 아이디 추가
 
-        ResultDto<Void> result  = ResultDto.in(InsertCompany.getStatus(), InsertCompany.getMessage());
-        return ResponseEntity.status(InsertCompany.getHttpStatus()).body(result);
+        ResultDto<Void> result  = ResultDto.in(InsertCard.getStatus(), InsertCard.getMessage());
+        return ResponseEntity.status(InsertCard.getHttpStatus()).body(result);
     }
 
 

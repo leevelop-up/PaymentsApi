@@ -38,7 +38,7 @@ public class SecurityConfiguration {
                 .and()
                 .authorizeRequests()// 조건별로 요청 허용/제한 설정
                 .antMatchers("/api/login", "/api/register","/home","/swagger-resources/**").permitAll() // 로그인 및 회원가입은 모든 사용자에게 허용
-                .antMatchers("/api/manage/**").hasRole("ADMIN") // /api/manage는 ADMIN 권한 필요
+                //.antMatchers("/api/manage/**").hasRole("ADMIN") // /api/manage는 ADMIN 권한 필요
                 .antMatchers("/api/service/**").hasAnyRole("USER", "ADMIN") // /api/service로 시작하는 모든 URL은 USER 및 ADMIN 권한 필요
                 //.anyRequest().authenticated() // 나머지 요청은 인증 필요
                 .and()
