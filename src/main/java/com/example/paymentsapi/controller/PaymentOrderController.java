@@ -17,11 +17,11 @@ import java.util.List;
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-@RequestMapping("/api/service")
+@RequestMapping("/api/order")
 public class PaymentOrderController {
     private final PaymentOrderService paymentOrderService;
     @ApiOperation(value="카드결제 진행")
-    @PostMapping(value = "/order", consumes = "application/json")
+    @PostMapping(value = "/ing", consumes = "application/json")
     public List<Order> OrderPayment(@RequestBody OrderStatusDto orderStatusDto){
 
         List<Order> resultData =  paymentOrderService.OrderInfoSave(orderStatusDto);
