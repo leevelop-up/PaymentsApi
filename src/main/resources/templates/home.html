@@ -196,14 +196,19 @@
     function sendOrder() {
         // 보낼 데이터 객체
         var orderData = {
-            // 여기에 필요한 데이터 추가
-            // 예: cardName, paymentAmount 등
+            "userid": "test",
+            "email": "test@naver.com",
+            "amount": "10000",
+            "orderNo": "20001",
+            "payPeriod": "0",
+            "paymentCode": "2",
+            "paymentMethod": "삼성"
         };
 
         // AJAX POST 요청
         $.ajax({
             type: 'POST',
-            url: '/api/service/order', // 요청 보낼 URL
+            url: '/api/order/ing', // 요청 보낼 URL
             contentType: 'application/json', // 데이터 타입
             data: JSON.stringify(orderData), // 데이터 전송
             success: function (response) {

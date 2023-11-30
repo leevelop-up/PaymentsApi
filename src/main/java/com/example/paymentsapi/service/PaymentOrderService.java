@@ -1,6 +1,7 @@
 package com.example.paymentsapi.service;
 
 import com.example.paymentsapi.controller.PaymentOrderController;
+import com.example.paymentsapi.repository.Card.CardInfo;
 import com.example.paymentsapi.repository.Card.CardRepository;
 import com.example.paymentsapi.repository.order.Order;
 import com.example.paymentsapi.repository.order.OrderRepository;
@@ -33,6 +34,12 @@ public class PaymentOrderService {
     private static final String INVALID_CARD_COMPANY_MSG = "유효하지 않은 카드사입니다.";
 
     public boolean isEmailValid(String email) {
+
+        if (email == null) {
+            // null인 경우 유효하지 않다고 처리
+            return false;
+        }
+
         String emailRegex = "^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
         Pattern pattern = Pattern.compile(emailRegex);
         Matcher matcher = pattern.matcher(email);
@@ -40,10 +47,13 @@ public class PaymentOrderService {
     }
 
     public List<Order> OrderInfoSave(OrderStatusDto orderStatusDto) {
+
+        System.out.println(orderStatusDto);
         Integer Period = orderStatusDto.getPayPeriod();
         String StateCode = SUCCESS_CODE;
         String StateMsg = SUCCESS_MSG;
-        String Transactionkey = "";
+        String Transactionkey = "1";
+        Integer accessCode = 200;
         String Email = orderStatusDto.getEmail();
         String CardName = orderStatusDto.getPaymentMethod();
 
@@ -54,22 +64,27 @@ public class PaymentOrderService {
         if (!isEmailValid(Email)) {
             StateCode = INVALID_EMAIL_CODE;
             StateMsg = INVALID_EMAIL_MSG;
+            accessCode = 401;
         }
 
         if (orderStatusDto.getAmount() <= 0) {
             StateCode = BELOW_ZERO_AMOUNT_CODE;
             StateMsg = BELOW_ZERO_AMOUNT_MSG;
+            accessCode = 402;
         }
 
-        Boolean ChkOrderNo = orderRepository.findByOrderNo(orderStatusDto.getOrderNo());
-        if (ChkOrderNo != null) {
+        Order ChkOrderNo = orderRepository.findByOrderNo(orderStatusDto.getOrderNo());
+        if (ChkOrderNo != null && ChkOrderNo.getOrderNo() != null) {
             StateCode = DUPLICATED_ORDER_ID_CODE;
             StateMsg = DUPLICATED_ORDER_ID_MSG;
+            accessCode = 403;
         }
 
-        if (cardRepository.findCardInfoBycardNameEN(orderStatusDto.getPaymentMethod()).isEmpty() || orderStatusDto.getPaymentMethod().isEmpty()) {
+        String cardInfoList = cardRepository.findCardInfoBycardNameKR(orderStatusDto.getPaymentMethod());
+        if (cardInfoList == null || cardInfoList.isEmpty() || orderStatusDto.getPaymentMethod().isEmpty()) {
             StateCode = INVALID_CARD_COMPANY_CODE;
             StateMsg = INVALID_CARD_COMPANY_MSG;
+            accessCode = 404;
         }
 
         Order orderInfo = Order.builder()
@@ -84,6 +99,7 @@ public class PaymentOrderService {
                 .paymentMethod(CardName)
                 .paymentCode(orderStatusDto.getPaymentCode())
                 .payPeriod(Period)
+                .accessCode(String.valueOf(accessCode))
                 .build();
 
         Order savedOrder = orderRepository.save(orderInfo);
