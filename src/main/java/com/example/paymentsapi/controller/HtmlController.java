@@ -13,5 +13,10 @@ public class HtmlController {
         return "home";
     }
 
+    @GetMapping("/main")
+    public String adminmain(){
+        return "adminmain";
+    }
+
 
 }

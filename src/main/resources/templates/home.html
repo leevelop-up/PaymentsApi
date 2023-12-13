@@ -32,8 +32,8 @@
         /* 가운데 정렬을 위한 스타일 */
         body {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
+            /*flex-direction: column;*/
+            /*justify-content: center;*/
             align-items: center;
             height: 100vh;
             margin: 0;
@@ -122,27 +122,69 @@
                 opacity: 0.2;
             }
         }
+        li{
+            margin-top:10px;
+            list-style-type: none;
+            width:300px;
+        }
     </style>
 </head>
 <body>
-
+<div id="inputScreen" style="width:50%;float: left;height:600px;border: 1px solid black;">
+    <div style="width:40%; margin:0 auto;margin-top:50px;">
+        <table>
+            <tr>
+                <td>API Key</td>
+                <td><input type="text" id="ApiKey" value=""></td>
+            </tr>
+            <tr>
+                <td>주문서번호</td>
+                <td><input type="text" id="orderNo"></td>
+            </tr>
+            <tr>
+                <td>아이디</td>
+                <td><input type="text" id="userId"></td>
+            </tr>
+            <tr>
+                <td>이메일</td>
+                <td><input type="text" id="email"></td>
+            </tr>
+            <tr>
+                <td>가격</td>
+                <td><input type="text" id="amount"></td>
+            </tr>
+            <tr>
+                <td>카드사</td>
+                <td><input type="text" id="CardName" readonly></td>
+            </tr>
+            <tr>
+                <td>카드사번호</td>
+                <td><input type="text" id="CardNo" readonly></td>
+            </tr>
+            <tr>
+                <td>할부</td>
+                <td><input type="text" id="installments"></td>
+            </tr>
+        </table>
+    </div>
+</div>
 <!-- 현재 화면 -->
-<div id="currentScreen">
+<div id="currentScreen" style="width:50%;float: left;">
     <h1>카드를 선택해보세요!</h1>
     <ul>
         <!-- 12개의 카드를 생성 -->
-        <li class="card" onclick="selectCard(this)">신한카드</li>
-        <li class="card" onclick="selectCard(this)">국민카드</li>
-        <li class="card" onclick="selectCard(this)">하나카드</li>
-        <li class="card" onclick="selectCard(this)">삼성카드</li>
-        <li class="card" onclick="selectCard(this)">현대카드</li>
-        <li class="card" onclick="selectCard(this)">롯데카드</li>
-        <li class="card" onclick="selectCard(this)">KB국민카드</li>
-        <li class="card" onclick="selectCard(this)">우리카드</li>
-        <li class="card" onclick="selectCard(this)">신세계카드</li>
-        <li class="card" onclick="selectCard(this)">씨티카드</li>
-        <li class="card" onclick="selectCard(this)">NH농협카드</li>
-        <li class="card" onclick="selectCard(this)">하나SK카드</li>
+        <li class="card" onclick="selectCard(this,1)">신한카드</li>
+        <li class="card" onclick="selectCard(this,2)">국민카드</li>
+        <li class="card" onclick="selectCard(this,3)">하나카드</li>
+        <li class="card" onclick="selectCard(this,4)">삼성카드</li>
+        <li class="card" onclick="selectCard(this,5)">현대카드</li>
+        <li class="card" onclick="selectCard(this,6)">롯데카드</li>
+        <li class="card" onclick="selectCard(this,7)">KB국민카드</li>
+        <li class="card" onclick="selectCard(this,8)">우리카드</li>
+        <li class="card" onclick="selectCard(this,9)">신세계카드</li>
+        <li class="card" onclick="selectCard(this,10)">씨티카드</li>
+        <li class="card" onclick="selectCard(this,11)">NH농협카드</li>
+        <li class="card" onclick="selectCard(this,12)">하나SK카드</li>
     </ul>
     <!-- 버튼 컨테이너 -->
     <div class="button-container">
@@ -154,23 +196,12 @@
 </div>
 
 <!-- 결제 정보 입력 화면 -->
-<div id="paymentScreen">
-    <input type="hidden" id="CardName" name="CardName" value="">
+<div id="paymentScreen" style="text-align: center; width: 50%; height: 600px;">
+
     <!-- 선택한 카드명과 앱 연결 중 문구 -->
     <h2>선택한 카드: <span id="selectedCardName"></span></h2>
     <div id="connectingText">카드사 앱 연결페이지<span class="dot-animation"></span>
-        <div>
-            <label for="installments">할부:</label>
-            <input type="text" id="installments" name="installments" value="">
-        </div>
-        <div>
-            <label for="email">이메일:</label>
-            <input type="text" id="email" name="email" value="">
-        </div>
-        <div>
-            <label for="userId">아이디:</label>
-            <input type="text" id="userId" name="userId" value="">
-        </div>
+
     </div>
     <div class="button-container">
         <!-- 결제 진행 버튼 -->
@@ -180,7 +211,7 @@
     </div>
 </div>
 <script>
-    function selectCard(card) {
+    function selectCard(card,no) {
         // 모든 카드에서 선택된 클래스를 제거
         var cards = document.querySelectorAll('.card');
         cards.forEach(function (c) {
@@ -194,6 +225,7 @@
         var selectedCardName = card.textContent;
         document.getElementById('selectedCardName').textContent = selectedCardName;
         document.getElementById('CardName').value = selectedCardName;
+        document.getElementById('CardNo').value = no;
     }
 
     function showPaymentScreen() {
@@ -213,10 +245,10 @@
         var orderData = {
             "userid": document.getElementById('userId').value,
             "email": document.getElementById('email').value,
-            "amount": "10000",
-            "orderNo": "20001",
+            "amount": document.getElementById('amount').value,
+            "orderNo": document.getElementById('orderNo').value,
             "payPeriod": document.getElementById('installments').value,
-            "paymentCode": "2",
+            "paymentCode": document.getElementById('CardNo').value,
             "paymentMethod":  document.getElementById('CardName').value
         };
 

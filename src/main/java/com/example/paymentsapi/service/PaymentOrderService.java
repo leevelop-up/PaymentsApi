@@ -67,10 +67,12 @@ public class PaymentOrderService {
             accessCode = 401;
         }
 
-        if (orderStatusDto.getAmount() <= 0) {
-            StateCode = BELOW_ZERO_AMOUNT_CODE;
-            StateMsg = BELOW_ZERO_AMOUNT_MSG;
-            accessCode = 402;
+        if(orderStatusDto.getAmount() != null) {
+            if (orderStatusDto.getAmount() <= 0) {
+                StateCode = BELOW_ZERO_AMOUNT_CODE;
+                StateMsg = BELOW_ZERO_AMOUNT_MSG;
+                accessCode = 402;
+            }
         }
 
         Order ChkOrderNo = orderRepository.findByOrderNo(orderStatusDto.getOrderNo());
