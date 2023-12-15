@@ -29,7 +29,7 @@ public class ProduceKeyService {
     private static final String KEY_ISSUE_FAIL_MESSAGE = "키발급 실패";
 
     public CommonDto insertCompany(String companyName) {
-        Optional<Company> existingCompany = companyRepository.findByCompanyName(companyName);
+        Optional<Company> existingCompany = companyRepository.findBycompanyName(companyName);
 
         if (existingCompany.isPresent()) {
             return CommonDto.builder()
@@ -56,25 +56,49 @@ public class ProduceKeyService {
     }
 
     public CommonDto insertKey(Integer companyCode) {
-        Optional<Company> company = companyRepository.findById(companyCode);
+        String company = "";
+        List<Serialkey> KeyConfirm = null;
+        Optional<Company> companyOptional = companyRepository.findById(companyCode);
 
-        if (!company.isPresent()) {
-            String generatedKey = generateSecureRandomKey();
-            Serialkey serialkey = Serialkey.builder()
-                    .serialKey(generatedKey)
-                    .companyCode(companyCode)
-                    .build();
-            serialkeyRepository.save(serialkey);
+        // 회사가 등록되어 있는지 확인
+        if (companyOptional.isPresent()) {
+            company = companyOptional.get().getCompanyName();
+            KeyConfirm = serialkeyRepository.findBycompanyCode(companyCode);
 
-            return CommonDto.builder()
-                    .message(KEY_ISSUE_SUCCESS_MESSAGE)
-                    .status("success")
-                    .data("")
-                    .build();
+            System.out.println("Received cardName: " + company);
+
+            // 키가 없는 경우 처리
+            if (KeyConfirm == null || KeyConfirm.isEmpty()) {
+                System.out.println("No keys found for company: " + company);
+                String generatedKey = generateSecureRandomKey();
+                Serialkey serialkey = Serialkey.builder()
+                        .serialKey(generatedKey)
+                        .companyCode(companyCode)
+                        .build();
+                serialkeyRepository.save(serialkey);
+
+                return CommonDto.builder()
+                        .message(KEY_ISSUE_SUCCESS_MESSAGE)
+                        .status("success")
+                        .httpStatus(HttpStatus.OK)
+                        .data("")
+                        .build();
+            } else {
+                System.out.println("Received code: " + KeyConfirm);
+                return CommonDto.builder()
+                        .message(KEY_ISSUE_FAIL_MESSAGE)
+                        .status("fail")
+                        .httpStatus(HttpStatus.BAD_REQUEST)
+                        .data("")
+                        .build();
+            }
         } else {
+            System.out.println("Company not found for code: " + companyCode);
+            // Handle the case where the company is not found
             return CommonDto.builder()
                     .message(KEY_ISSUE_FAIL_MESSAGE)
                     .status("fail")
+                    .httpStatus(HttpStatus.BAD_REQUEST)
                     .data("")
                     .build();
         }

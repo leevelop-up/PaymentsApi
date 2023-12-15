@@ -16,6 +16,8 @@ public class Serialkey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="sk_serialno")
+    private Integer serialNo;
 
     @Column(name="sk_companycode")
     private Integer companyCode;

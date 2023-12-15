@@ -26,8 +26,8 @@ public class Company {
     @Column(name="cd_joindate")
     private LocalDateTime joinDate;
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "card_no", referencedColumnName = "card_no")
-    private CardInfo cardInfo;
+//    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "card_no", referencedColumnName = "card_no")
+//    private CardInfo cardInfo;
 
 }

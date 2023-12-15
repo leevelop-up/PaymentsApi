@@ -135,7 +135,7 @@
         <table>
             <tr>
                 <td>API Key</td>
-                <td><input type="text" id="ApiKey" value=""></td>
+                <td><input type="text" id="ApiKey" value="8GZ92SDXLNKEBFMAH716RUVQOYW0P53TI4JC"></td>
             </tr>
             <tr>
                 <td>주문서번호</td>
@@ -166,6 +166,7 @@
                 <td><input type="text" id="installments"></td>
             </tr>
         </table>
+        <span style="text-align: center;">*API Key의 경우 발급된 번호만 이용 가능</span>
     </div>
 </div>
 <!-- 현재 화면 -->
@@ -249,7 +250,8 @@
             "orderNo": document.getElementById('orderNo').value,
             "payPeriod": document.getElementById('installments').value,
             "paymentCode": document.getElementById('CardNo').value,
-            "paymentMethod":  document.getElementById('CardName').value
+            "paymentMethod":  document.getElementById('CardName').value,
+            "transactionkey":  document.getElementById('ApiKey').value
         };
 
         // AJAX POST 요청

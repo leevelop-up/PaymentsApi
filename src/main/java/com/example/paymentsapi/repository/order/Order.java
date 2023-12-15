@@ -45,6 +45,4 @@ public class Order {
     private Integer paymentCode;
 
 
-    public void setId(long l) {
-    }
 }
