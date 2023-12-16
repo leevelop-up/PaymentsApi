@@ -8,12 +8,15 @@ import com.example.paymentsapi.repository.order.OrderRepository;
 import com.example.paymentsapi.repository.serialkey.Serialkey;
 import com.example.paymentsapi.repository.serialkey.SerialkeyRepository;
 import com.example.paymentsapi.web.dto.OrderStatusDto;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -67,6 +70,22 @@ public class PaymentOrderService {
         //주문서 번호가 동일한지 체크
         List<Order> ChkOrderNo = orderRepository.findByOrderNo(orderStatusDto.getOrderNo());
         String cardInfoList = cardRepository.findCardInfoBycardNameKR(orderStatusDto.getPaymentMethod());
+        Set<String> uniqueOrderNumbers = new HashSet<>();
+        boolean hasDuplicates = false;
+
+        for (Order order : ChkOrderNo) {
+            Integer orderNumber = order.getOrderNo(); // Replace with the actual method to get the order number
+
+            if (!uniqueOrderNumbers.add(String.valueOf(orderNumber))) {
+                // Duplicate found
+                hasDuplicates = true;
+                System.out.println("Duplicate order number found: " + orderNumber);
+            }
+        }
+
+        if (!hasDuplicates) {
+            System.out.println("No duplicate order numbers found.");
+        }
 
         if(InputKey == null){
             StateCode = INVALID_SerialKey_CODE;
@@ -84,7 +103,7 @@ public class PaymentOrderService {
                 StateMsg = BELOW_ZERO_AMOUNT_MSG;
                 accessCode = 402;
             }
-        }else if (ChkOrderNo != null) {
+        }else if (hasDuplicates || orderStatusDto.getOrderNo() == null) {
             StateCode = DUPLICATED_ORDER_ID_CODE;
             StateMsg = DUPLICATED_ORDER_ID_MSG;
             accessCode = 403;
