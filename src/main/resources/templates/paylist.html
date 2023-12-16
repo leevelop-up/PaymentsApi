@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <title>Hello</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+  <link rel="stylesheet" href="/css/main.css" />
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="/css/main.css">
+</head>
+<style>
+  /* Optional: Add some basic styling */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+  }
+  body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+  }
+
+  table {
+    width: 1500px;
+    margin-top: 10px;
+    border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f2f2f2;
+  }
+  #pagination-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+  }
+
+
+  .pagination-button {
+    background-color: #95a5a6;
+    color: white;
+    border: 1px solid #95a5a6;
+    padding: 8px 16px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    margin: 0 4px;
+    border-radius: 4px;
+  }
+
+  .pagination-button:hover {
+    background-color: #3498db;
+  }
+
+  .selected {
+    background-color: #3498db;
+  }
+</style>
+<body>
+<div class=e1_3>
+  <div class=e1_573>
+    <div class=e1_574>
+    </div>
+    <div class=e1_586>
+      <div class="e1_587">
+        <div class="e1_588 hoverable-div"><span class="e1_589"><a href="/main">Api 사용</a></span></div>
+        <div class="e1_590 hoverable-div"><span class="e1_591"><a href="/paylist">결제 내역</a></span></div>
+        <div class="e1_592 hoverable-div"><span class="e1_593"><a href="/memberlist">회원 등록/관리</a></span></div>
+        <div class="e1_594 hoverable-div"><span class="e1_595"><a href="/accountlist">정산 시스템</a></span></div>
+        <div class="e1_596 hoverable-div"><span class="e1_597"><a href="/develop">개발자센터</a></span></div>
+      </div>
+      <div class=e1_598>
+        <div class=e1_599><span  class="e1_600">결제내역 확인</span></div>
+        <div class=e1_601><span  class="e1_602"><a href="/login">로그인</a></span></div>
+      </div>
+    </div>
+  </div>
+  <div class=e1_10>
+    <div class=e1_11>
+      <div class="e1_12" style="background: white; border-top:1px solid black;">
+        <div style="height: 590px;">
+          <table>
+            <thead>
+            <tr>
+              <th>결제 번호</th>
+              <th>사용자 ID</th>
+              <th>이메일</th>
+              <th>금액</th>
+              <th>주문 번호</th>
+              <th>결제 상태</th>
+              <th>결제 상태 코드</th>
+              <th>주문 일자</th>
+              <th>결제 수단</th>
+              <th>결제 기간</th>
+              <th>액세스 코드</th>
+              <th>결제 코드</th>
+            </tr>
+            </thead>
+            <tbody id="paymentTableBody">
+
+            <!-- 필요한 만큼 더 많은 행을 추가하세요. -->
+            </tbody>
+          </table>
+        </div>
+        <div id="pagination-container">
+          <!-- 페이징 버튼 등을 표시할 컨테이너 -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
+<script>
+
+    // Function to populate the table with data
+    function populateTable(data) {
+    var tableBody = document.getElementById("paymentTableBody");
+
+    // Clear existing rows
+    tableBody.innerHTML = "";
+
+    // Iterate over the data and create rows
+    data.content.forEach(function (payment) {
+    var row = tableBody.insertRow();
+    row.insertCell(0).textContent = payment.payNo;
+    row.insertCell(1).textContent = payment.userid;
+    row.insertCell(2).textContent = payment.email;
+    row.insertCell(3).textContent = payment.amount;
+    row.insertCell(4).textContent = payment.orderNo;
+    row.insertCell(5).textContent = payment.resultStatus;
+    row.insertCell(6).textContent = payment.resultStatusCode;
+    row.insertCell(7).textContent = payment.orderDate;
+    row.insertCell(8).textContent = payment.paymentMethod;
+    row.insertCell(9).textContent = payment.payPeriod;
+    row.insertCell(10).textContent = payment.accessCode;
+    row.insertCell(11).textContent = payment.paymentCode;
+  });
+
+    // Display pagination
+    displayPagination(data);
+  }
+
+    // Display pagination
+    function displayPagination(pagingData) {
+      var paginationContainer = document.getElementById("pagination-container");
+      paginationContainer.innerHTML = "";
+
+      // Create pagination buttons
+      for (var i = 1; i <= pagingData.totalPages; i++) {
+        var button = document.createElement("button");
+        button.textContent = i;
+        button.className = "pagination-button";
+        button.addEventListener("click", function () {
+          fetchData(this.textContent - 1); // Page number is 0-based
+        });
+        paginationContainer.appendChild(button);
+      }
+
+      // Highlight the selected page
+      var selectedButton = paginationContainer.children[pagingData.number];
+      if (selectedButton) {
+        selectedButton.classList.add("selected");
+      }
+    }
+
+    // Fetch data using AJAX
+    function fetchData(pageNumber = 0, pageSize = 10) {
+    fetch(`/api/order/getlist?page=${pageNumber}&size=${pageSize}`)
+            .then((response) => response.json())
+            .then((data) => populateTable(data))
+            .catch((error) => console.error("Error fetching data:", error));
+  }
+
+    // Call fetchData when the page is loaded
+    document.addEventListener("DOMContentLoaded", function () {
+    fetchData();
+  });
+</script>

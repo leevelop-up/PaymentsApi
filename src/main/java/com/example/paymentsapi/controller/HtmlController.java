@@ -18,5 +18,14 @@ public class HtmlController {
         return "adminmain";
     }
 
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+    @GetMapping("/paylist")
+    public String paylist(){
+        return "paylist";
+    }
 
 }

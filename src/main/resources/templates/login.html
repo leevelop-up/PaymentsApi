@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>로그인 페이지</title>
-  <link rel="stylesheet" href="styles.css">
+
 </head>
 <style>
   body {
@@ -50,9 +50,19 @@
     background-color: #0056b3;
   }
 
+   #map {
+     height: 400px;
+     width: 100%;
+   }
+
 </style>
 <body>
 <div class="container">
+  <form id="addressForm">
+    <label for="address">Enter Address:</label>
+    <input type="text" id="address" name="address" required>
+    <button type="button" onclick="geocodeAddress()">Submit</button>
+  </form>
   <form id="loginForm">
     <h2>로그인</h2>
     <label for="username">사용자명:</label>
@@ -64,7 +74,44 @@
     <button type="button" onclick="submitForm()">로그인</button>
   </form>
 </div>
+<h1>My Location-based Webpage</h1>
+<p id="location-info">Getting your location...</p>
+<div id="map"></div>
+<div id="location-details"></div>
+<script src="/static/js/login.js"></script>
+<script>
+  function submitForm(){
 
-<script src="script.js"></script>
+  }
+  var map;
+
+  function initMap() {
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: {lat: -34.397, lng: 150.644},
+      zoom: 8
+    });
+  }
+
+  function geocodeAddress() {
+    var address = document.getElementById('address').value;
+    var geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ 'address': address }, function(results, status) {
+      if (status === 'OK') {
+        map.setCenter(results[0].geometry.location);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: results[0].geometry.location,
+          title: 'Marker for ' + address
+        });
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  }
+
+
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDIiABYqMZtCT7U36eMJcKOxj9Tcb_3VnE&callback=initMap" async defer></script>
 </body>
 </html>
