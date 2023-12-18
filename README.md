@@ -28,3 +28,10 @@
 
 결제 실패시 Logger에 저장하여 기록저장 그외 성공시 DB저장하여 목록와
 ![image](https://github.com/leevelop-up/PaymentsApi/assets/63052631/f45d03a1-880c-4caa-acac-449cf39990ed)
+
+
+## 결제 연동 기능 구현
+![image](https://github.com/leevelop-up/PaymentsApi/assets/63052631/09f6971a-97eb-4f0a-a79a-f4db40bf29ae)
+
+## 결제 관련 리스트 페이지
+![image](https://github.com/leevelop-up/PaymentsApi/assets/63052631/7afe4010-acc7-41a8-98e4-b0621237c654)
