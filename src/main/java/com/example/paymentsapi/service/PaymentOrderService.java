@@ -10,6 +10,8 @@ import com.example.paymentsapi.repository.serialkey.SerialkeyRepository;
 import com.example.paymentsapi.web.dto.OrderStatusDto;
 import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -26,6 +28,8 @@ public class PaymentOrderService {
     private final OrderRepository orderRepository;
     private final CardRepository cardRepository;
     private final SerialkeyRepository serialkeyRepository;
+
+    private final Logger log = LoggerFactory.getLogger(getClass());
     private static final String SUCCESS_CODE = "200";
     private static final String INVALID_EMAIL_CODE = "4003";
     private static final String BELOW_ZERO_AMOUNT_CODE = "4002";
@@ -56,7 +60,6 @@ public class PaymentOrderService {
 
     public List<Order> OrderInfoSave(OrderStatusDto orderStatusDto) {
 
-        System.out.println(orderStatusDto);
         Integer Period = orderStatusDto.getPayPeriod();
         String StateCode = SUCCESS_CODE;
         String StateMsg = SUCCESS_MSG;
@@ -72,38 +75,35 @@ public class PaymentOrderService {
         String cardInfoList = cardRepository.findCardInfoBycardNameKR(orderStatusDto.getPaymentMethod());
         Set<String> uniqueOrderNumbers = new HashSet<>();
         boolean hasDuplicates = false;
-
         for (Order order : ChkOrderNo) {
             Integer orderNumber = order.getOrderNo(); // Replace with the actual method to get the order number
-
             if (!uniqueOrderNumbers.add(String.valueOf(orderNumber))) {
-                // Duplicate found
                 hasDuplicates = true;
                 System.out.println("Duplicate order number found: " + orderNumber);
             }
         }
-
-        if (!hasDuplicates) {
+        if (!hasDuplicates || orderStatusDto.getOrderNo() == null) {
             System.out.println("No duplicate order numbers found.");
+            hasDuplicates = false;
         }
-
+        if (Period == null) {
+            Period = 0;
+        }
         if(InputKey == null){
             StateCode = INVALID_SerialKey_CODE;
             StateMsg = INVALID_SerialKey_MSG;
             accessCode = 401;
-        }else if (Period == null) {
-            Period = 0;
         }else if (!isEmailValid(Email)) {
             StateCode = INVALID_EMAIL_CODE;
             StateMsg = INVALID_EMAIL_MSG;
-            accessCode = 401;
+            accessCode = 405;
         }else if(orderStatusDto.getAmount() != null) {
             if (orderStatusDto.getAmount() <= 0) {
                 StateCode = BELOW_ZERO_AMOUNT_CODE;
                 StateMsg = BELOW_ZERO_AMOUNT_MSG;
                 accessCode = 402;
             }
-        }else if (hasDuplicates || orderStatusDto.getOrderNo() == null) {
+        }else if (hasDuplicates == false || orderStatusDto.getOrderNo() == null) {
             StateCode = DUPLICATED_ORDER_ID_CODE;
             StateMsg = DUPLICATED_ORDER_ID_MSG;
             accessCode = 403;
@@ -113,6 +113,9 @@ public class PaymentOrderService {
             accessCode = 404;
         }
 
+        if(accessCode != 200){
+            log.error(accessCode+"/"+StateMsg+"/"+orderStatusDto.getUserid()+"/"+orderStatusDto.getOrderNo());
+        }
         Order orderInfo = Order.builder()
                 .userid(orderStatusDto.getUserid())
                 .email(Email)

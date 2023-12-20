@@ -10,7 +10,9 @@
     <link rel="stylesheet" type="text/css" href="/css/main.css">
 </head>
 <body>
+
 <div id="inputScreen" style="width:50%;float: left;height:600px;border: 1px solid black;">
+    <h5 style="text-align: center; padding-top: 40px; font-weight: bold;">테스트 데이터 입력</h5>
     <div style="width:40%; margin:0 auto;margin-top:50px;">
         <table>
             <tr>
@@ -51,7 +53,7 @@
 </div>
 <!-- 현재 화면 -->
 <div id="currentScreen" style="width:50%;float: left;">
-    <h1>카드를 선택해보세요!</h1>
+    <h5 style="text-align: center; padding-top: 40px; font-weight: bold;">카드 선택</h5>
     <ul>
         <!-- 12개의 카드를 생성 -->
         <li class="card" onclick="selectCard(this,1)">신한카드</li>
@@ -81,7 +83,7 @@
 
     <!-- 선택한 카드명과 앱 연결 중 문구 -->
     <h2>선택한 카드: <span id="selectedCardName"></span></h2>
-    <div id="connectingText">카드사 앱 연결페이지<span class="dot-animation"></span>
+    <div id="connectingText">카드사 앱 연결페이지<br><span class="dot-animation"></span>
 
     </div>
     <div class="button-container">
@@ -144,6 +146,7 @@
                 // 성공 시 실행되는 콜백 함수
                 console.log('주문이 성공적으로 완료되었습니다.');
                 console.log('서버 응답:', response);
+                $(".dot-animation").html(response[0]["resultStatus"]+"<br>"+response[0]["paymentMethod"]+"( 결제번호:"+response[0]["payNo"]+")");
             },
             error: function (error) {
                 // 실패 시 실행되는 콜백 함수
