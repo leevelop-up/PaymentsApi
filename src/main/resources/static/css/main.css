@@ -322,7 +322,7 @@ button {
     border: 1px solid #ccc; /* 테두리 추가 */
     padding: 10px; /* 내부 여백 추가 */
     height: 300px; /* 높이 조절 */
-    display: flex;
+    padding-top: 115px;
     justify-content: center;
     align-items: center;
 }
@@ -349,4 +349,15 @@ li{
     margin-top:10px;
     list-style-type: none;
     width:300px;
+}
+a{
+    font-size: 15px;
+    line-height: 20px;
+    color: currentColor;
+    border-radius: 8px;
+    border: 0;
+    cursor: pointer;
+    background-color: transparent;
+    text-decoration: none;
+    text-align: left;
 }

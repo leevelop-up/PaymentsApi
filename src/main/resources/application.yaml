@@ -11,8 +11,19 @@ jwt:
   secret_key: qpwoeirut019234
 
 
+#  1. error	Red	사용자 요청을 처리하는 중 발생한 문제
+#  2. warn	Yellow	처리 가능한 문제이지만, 향후 시스템 에러의 원인이 될 수 있는 문제
+#  3. info	Green	로그인이나 상태 변경과 같은 정보성 메시지
+#  4. debug	Green	개발시 디버깅 목적으로 출력하는 메시지
+#  5. trace	Green	debug 보다 좀 더 상세한 메세지
 
+#  스레드 정보, 클래스 이름 같은 부가 정보를 함께 볼 수 있고, 출력 모양을 조정할 수 있다.
+#  로그 레벨에 따라 개발서버에서는 모든 로그를 출력하고, 운영서버에서는 출력하지 않는 등 로그를 상황에 맞게 조절할 수 있다.
+#  시스템 아웃 콘솔에만 출력하는 것이 아니라, 파일이나 네트워크 등, 로그를 별도의 위치에 남길 수 있다.
+#  특히 파일로 남길 때에는 일별, 특정 용량에 따라 로그를 분할하는 것도 가능하다.
+#  println을 썼을 때보다 내부 버퍼링, 멀티 스레드 등의 환경에서 훨씬 좋다
 logging:
   level:
-    org.hibernate.type: trace
+    org.hibernate.type: error
     com.app: debug
+  config: classpath:logback-spring.xml

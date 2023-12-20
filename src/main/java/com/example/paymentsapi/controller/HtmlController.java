@@ -27,5 +27,9 @@ public class HtmlController {
     public String paylist(){
         return "paylist";
     }
+    @GetMapping("/memberlist")
+    public String memberlist(){
+        return "memberlist";
+    }
 
 }
