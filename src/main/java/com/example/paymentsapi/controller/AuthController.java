@@ -16,13 +16,11 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
 public class AuthController {
-
     private final AuthService authService;
 
-
-    @PostMapping("/companyCheck")
-    public ResponseEntity<ResultDto<Void>> CompanyCheck(Integer CompanyNo){
-
+    @PostMapping(value = "/companyCheck", consumes = "application/json")
+    public ResponseEntity<ResultDto<Void>> CompanyCheck(@RequestBody Integer CompanyNo){
+        System.out.println("회사번호"+CompanyNo);
         CommonDto resultCompanyCheck = authService.companyCheck(CompanyNo);
         ResultDto<Void> result  = ResultDto.in(resultCompanyCheck.getStatus(), resultCompanyCheck.getMessage());
         return ResponseEntity.status(resultCompanyCheck.getHttpStatus()).body(result);
@@ -33,7 +31,9 @@ public class AuthController {
     public ResponseEntity<ResultDto<Void>> JoinMember(@RequestBody User company){
         CommonDto joinMember = authService.join(company);
 
-        return
+
+        ResultDto<Void> result  = ResultDto.in(joinMember.getStatus(), joinMember.getMessage());
+        return ResponseEntity.status(joinMember.getHttpStatus()).body(result);
     }
 
 
