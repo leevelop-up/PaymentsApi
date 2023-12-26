@@ -1,5 +1,5 @@
 # 자사몰 결제 API 시스템
-
+[![CI/CD for PaymentsApi](https://github.com/leevelop-up/PaymentsApi/actions/workflows/workflows.yml/badge.svg)](https://github.com/leevelop-up/PaymentsApi/actions/workflows/workflows.yml)
 ## 소개
 
 자사몰 간편결제를 위한 결제대행 api
@@ -26,22 +26,12 @@
 - `카드번호` (마스킹된 카드 번호)
 - 기타 필드: 필요에 따라 추가적인 필드를 포함할 수 있음
 
-## 결제 성공 (Payment Success)
+결제 실패시 Logger에 저장하여 기록저장 그외 성공시 DB저장하여 목록와
+![image](https://github.com/leevelop-up/PaymentsApi/assets/63052631/f45d03a1-880c-4caa-acac-449cf39990ed)
 
-- 내용 코드 번호: 100
-- 내용: "결제가 성공적으로 완료되었습니다. 감사합니다!"
 
-## 결제 실패 (Payment Fail)
+## 결제 연동 기능 구현
+![image](https://github.com/leevelop-up/PaymentsApi/assets/63052631/09f6971a-97eb-4f0a-a79a-f4db40bf29ae)
 
-| 에러 코드               | 한글 에러 메시지
-|--------------------------|---------------------------------------------------
-| BELOW_ZERO_AMOUNT        | 금액은 0보다 커야 합니다.
-| DUPLICATED_ORDER_ID      | 이미 승인 및 취소가 진행된 중복된 주문번호 입니다. 다른 주문번호로 진행해주세요.
-| INVALID_BANK             | 유효하지 않은 은행입니다.
-| INVALID_CARD_COMPANY     | 유효하지 않은 카드사입니다.
-| INVALID_SUCCESS_URL      | successUrl 값은 필수 값입니다.
-| INVALID_EMAIL            | 이메일 주소 형식에 맞지 않습니다.
-| INVALID_DATE             | 날짌 데이터가 잘못 되었습니다.
-| INCORRECT_FAIL_URL_FORMAT | 잘못된 failUrl 입니다.
-| INCORRECT_SUCCESS_URL_FORMAT | 잘못된 successUrl 입니다.
-| INVALID_ORDER_ID         | orderId는 영문 대소문자, 숫자, 특수문자(-, _) 만 허용합니다. 6자 이상 64자 이하여야 합니다.
+## 결제 관련 리스트 페이지
+![image](https://github.com/leevelop-up/PaymentsApi/assets/63052631/7afe4010-acc7-41a8-98e4-b0621237c654)
