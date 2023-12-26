@@ -32,7 +32,6 @@ public class PayListController {
         Specification<Order> spec = Specification.where(null);
 
         if (date != null && !date.isEmpty()) {
-            // 예제로 날짜는 정확한 매칭으로 처리되도록 했습니다. 실제로는 범위 등을 고려해야 할 수 있습니다.
             LocalDate parsedDate = LocalDate.parse(date);
             spec = spec.and((root, query, criteriaBuilder) ->
                     criteriaBuilder.equal(root.get("orderDate"), parsedDate));

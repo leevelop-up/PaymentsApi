@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.HashSet;
@@ -124,7 +125,7 @@ public class PaymentOrderService {
                 .resultStatus(StateMsg)
                 .resultStatusCode(StateCode)
                 .transactionkey(Transactionkey)
-                .orderDate(LocalDateTime.now())
+                .orderDate(LocalDate.now())
                 .paymentMethod(CardName)
                 .paymentCode(orderStatusDto.getPaymentCode())
                 .payPeriod(Period)
