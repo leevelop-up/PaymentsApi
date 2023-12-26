@@ -4,6 +4,7 @@ package com.example.paymentsapi.repository.order;
 import lombok.*;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -34,7 +35,7 @@ public class Order {
     @Column(name="payment_transactionkey")
     private String transactionkey;
     @Column(name="payment_orderdate")
-    private LocalDateTime orderDate;
+    private LocalDate orderDate;
     @Column(name="payment_paymentmathod")
     private String paymentMethod;
     @Column(name="payment_payperiod")
