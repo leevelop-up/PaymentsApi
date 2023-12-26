@@ -29,8 +29,9 @@ public class AuthController {
 
     @ApiOperation("회원 가입")
     @PostMapping("/join")
-    public ResponseEntity<ResultDto<Void>> JoinMember(@RequestBody User company){
-        CommonDto joinMember = authService.join(company);
+    public ResponseEntity<ResultDto<Void>> JoinMember(@RequestBody User user){
+        System.out.println(user.getUserId());
+        CommonDto joinMember = authService.join(user);
         ResultDto<Void> result  = ResultDto.in(joinMember.getStatus(), joinMember.getMessage());
         return ResponseEntity.status(joinMember.getHttpStatus()).body(result);
     }
