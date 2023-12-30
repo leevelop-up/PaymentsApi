@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="user_no")
+    private String userNo;
 
     @Column(name="user_email")
     private String userId;
@@ -29,6 +31,7 @@ public class User {
     private Integer companyCode;
     @Column(name="user_joindate")
     private LocalDateTime joinDate;
-
+    @Column(name="user_authstate")
+    private String State;
 
 }

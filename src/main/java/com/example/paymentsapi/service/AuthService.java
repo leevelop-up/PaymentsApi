@@ -8,6 +8,8 @@ import com.example.paymentsapi.web.dto.CommonDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -22,6 +24,8 @@ import java.util.Optional;
 public class AuthService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
+    private final JavaMailSender javaMailSender;
+
     public CommonDto companyCheck(Integer companyNo) {
 
         Optional<Company> companyChecking = companyRepository.findBycompanyCode(companyNo);
@@ -33,7 +37,7 @@ public class AuthService {
                     .httpStatus(HttpStatus.OK)
                     .data("success")
                     .build();
-        }else{
+        } else {
             return CommonDto.builder()
                     .message("none")
                     .status("fail")
@@ -60,33 +64,40 @@ public class AuthService {
     }
 
     public CommonDto join(User user) {
-        String userId= user.getUserId();
-        String userName= user.getUserName();
+        String userId = user.getUserId();
+        String userName = user.getUserName();
         LocalDateTime now = LocalDateTime.now();
         String StateMsg = "성공";
+
         List<Integer> randomValues = generateRandomNumbers(5);
-        if(userRepository.existsByuserId(userId)){
+
+        if (userRepository.existsByuserId(userId)) {
             StateMsg = "동일한 아이디가 있습니다.";
-        }else{
-            User userInfo =User.builder()
+        } else {
+            User userInfo = User.builder()
                     .userId(userId)
                     .companyCode(user.getCompanyCode())
                     .passWord(randomValues.toString())
                     .userName(userName)
+                    .State("N")
                     .userRole("USER")
                     .joinDate(now)
                     .build();
             userRepository.save(userInfo);
-            StateMsg = "임시 비밀번호"+randomValues.toString();
+            StateMsg = "임시 비밀번호" + randomValues;
+
+            SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
+            simpleMailMessage.setTo(userId);
+            simpleMailMessage.setSubject("임시비밀번호 발급");
+            simpleMailMessage.setFrom("merong0075@gmail.com");
+            simpleMailMessage.setText("임시비밀번호");
+            javaMailSender.send(simpleMailMessage);
         }
-
-
         return CommonDto.builder()
                 .message(StateMsg)
-                .status("success")
-                .httpStatus(HttpStatus.OK)
+                .status("fail")
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .data("none")
                 .build();
-
     }
 }

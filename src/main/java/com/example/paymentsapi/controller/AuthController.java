@@ -1,14 +1,14 @@
 package com.example.paymentsapi.controller;
 
 import com.example.paymentsapi.repository.User.User;
-import com.example.paymentsapi.repository.company.Company;
 import com.example.paymentsapi.service.AuthService;
 import com.example.paymentsapi.web.dto.CommonDto;
 import com.example.paymentsapi.web.dto.ResultDto;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -27,14 +27,22 @@ public class AuthController {
     }
 
 
+    @ApiOperation("회원 가입")
     @PostMapping("/join")
-    public ResponseEntity<ResultDto<Void>> JoinMember(@RequestBody User company){
-        CommonDto joinMember = authService.join(company);
-
-
+    public ResponseEntity<ResultDto<Void>> JoinMember(@RequestBody User user){
+        System.out.println(user.getUserId());
+        CommonDto joinMember = authService.join(user);
         ResultDto<Void> result  = ResultDto.in(joinMember.getStatus(), joinMember.getMessage());
         return ResponseEntity.status(joinMember.getHttpStatus()).body(result);
     }
+
+//    @ApiOperation("로그인")
+//    @PostMapping("/login")
+//    public ResponseEntity<String> loginMember(@RequestBody User user){
+//        CommonDto joinMember = authService.join(user);
+//        ResultDto<Void> result  = ResultDto.in(user.getStatus(), user.getMessage());
+//        return ResponseEntity.status(user.getHttpStatus()).body(result);
+//    }
 
 
 
