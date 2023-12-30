@@ -126,13 +126,8 @@
                     <label for="companyCodeInput">회사 코드:</label>
                     <input type="text" id="companyCodeInput" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
                   </div>
-                  <div style="margin-right: 10px;">
-                    <label for="joinDateInput">가입 날짜:</label>
-                    <input type="text" id="joinDateInput" placeholder="YYYY-MM-DD" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;">
-                  </div>
-
                   <!-- 검색 버튼 -->
-                  <button onclick="searchUsers()" style="background-color: #3498db; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">검색</button>
+                  <button onclick="searchPayments()" style="background-color: #3498db; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">검색</button>
                   <button onclick="$('#PopRegister').show();" style="background-color: #95a5a6; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">회원 가입</button>
                 </div>
               </div>
@@ -140,9 +135,10 @@
               <thead>
               <tr>
                 <th>사용자 ID</th>
-                <th>이메일</th>
                 <th>사용자 이름</th>
                 <th>회사 코드</th>
+                <th>회원 등급</th>
+                <th>가입 유무</th>
                 <th>가입 날짜</th>
               </tr>
               </thead>
@@ -177,10 +173,6 @@
 </body>
 </html>
 <script>
-  function searchUsers() {
-    // 여기에 검색 기능을 구현하세요.
-    // 검색 결과를 동적으로 업데이트하고, 페이징 기능을 구현하세요.
-  }
   function CheckCompany(){
     // AJAX POST 요청
     $.ajax({
@@ -231,4 +223,103 @@
       }
     });
   }
+
+
+
+
+
+
+  // Function to populate the table with data
+  function populateTable(data) {
+    var tableBody = document.getElementById("userTableBody");
+
+    // Clear existing rows
+    tableBody.innerHTML = "";
+
+    // Iterate over the data and create rows
+    data.content.forEach(function (user) {
+      var row = tableBody.insertRow();
+      console.log(user);
+      row.insertCell(0).textContent = user.userId; // Assuming user.id is the identifier for the payment
+      row.insertCell(1).textContent = user.userName;
+      row.insertCell(2).textContent = user.companyCode;
+      row.insertCell(3).textContent = user.userRole;
+      row.insertCell(4).textContent = user.state;
+      row.insertCell(5).textContent = user.joinDate;
+
+    });
+
+    // Display pagination
+    displayPagination(data);
+  }
+
+  // Display pagination
+  function displayPagination(pagingData) {
+    var paginationContainer = document.getElementById("pagination-container");
+    paginationContainer.innerHTML = "";
+
+    // Create pagination buttons
+    for (var i = 1; i <= pagingData.totalPages; i++) {
+      var button = document.createElement("button");
+      button.textContent = i;
+      button.className = "pagination-button";
+      button.addEventListener("click", function () {
+        fetchData(
+                document.getElementById("userIdInput").value,
+                document.getElementById("userEmailInput").value,
+                document.getElementById("userRoleInput").value,
+                document.getElementById("companyCodeInput").value,
+                this.textContent - 1); // Page number is 0-based
+      });
+      paginationContainer.appendChild(button);
+    }
+
+    // Highlight the selected page
+    var selectedButton = paginationContainer.children[pagingData.number];
+    if (selectedButton) {
+      selectedButton.classList.add("selected");
+    }
+  }
+
+  // Fetch data using AJAX
+  function fetchData(userId, email, role, companycode, pageNumber = 0, pageSize = 10) {
+    var url = `/api/order/memberlist?page=${pageNumber}&size=${pageSize}`;
+    if (userId || email || role || companycode) {
+      url += `&userId=${userId}&email=${email}&userRole=${role}&companyCode=${companycode}`;
+    }
+    fetch(url)
+            .then((response) => response.json())
+            .then((data) => populateTable(data))
+            .catch((error) => console.error("Error fetching data:", error));
+  }
+
+  // Call fetchData when the page is loaded
+  document.addEventListener("DOMContentLoaded", function () {
+    fetchData();
+  });
+
+  function searchPayments() {
+    fetchData(
+            document.getElementById("userIdInput").value,
+            document.getElementById("userEmailInput").value,
+            document.getElementById("userRoleInput").value,
+            document.getElementById("companyCodeInput").value
+    );
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 </script>

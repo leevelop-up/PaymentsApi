@@ -169,31 +169,31 @@
 
     // Function to populate the table with data
     function populateTable(data) {
-    var tableBody = document.getElementById("paymentTableBody");
+      var tableBody = document.getElementById("paymentTableBody");
 
-    // Clear existing rows
-    tableBody.innerHTML = "";
+      // Clear existing rows
+      tableBody.innerHTML = "";
 
-    // Iterate over the data and create rows
-    data.content.forEach(function (payment) {
-    var row = tableBody.insertRow();
-    row.insertCell(0).textContent = payment.payNo;
-    row.insertCell(1).textContent = payment.userid;
-    row.insertCell(2).textContent = payment.email;
-    row.insertCell(3).textContent = payment.amount;
-    row.insertCell(4).textContent = payment.orderNo;
-    row.insertCell(5).textContent = payment.resultStatus;
-    row.insertCell(6).textContent = payment.resultStatusCode;
-    row.insertCell(7).textContent = payment.orderDate;
-    row.insertCell(8).textContent = payment.paymentMethod;
-    row.insertCell(9).textContent = payment.payPeriod;
-    row.insertCell(10).textContent = payment.accessCode;
-    row.insertCell(11).textContent = payment.paymentCode;
-  });
+      // Iterate over the data and create rows
+      data.content.forEach(function (payment) {
+      var row = tableBody.insertRow();
+      row.insertCell(0).textContent = payment.payNo;
+      row.insertCell(1).textContent = payment.userid;
+      row.insertCell(2).textContent = payment.email;
+      row.insertCell(3).textContent = payment.amount;
+      row.insertCell(4).textContent = payment.orderNo;
+      row.insertCell(5).textContent = payment.resultStatus;
+      row.insertCell(6).textContent = payment.resultStatusCode;
+      row.insertCell(7).textContent = payment.orderDate;
+      row.insertCell(8).textContent = payment.paymentMethod;
+      row.insertCell(9).textContent = payment.payPeriod;
+      row.insertCell(10).textContent = payment.accessCode;
+      row.insertCell(11).textContent = payment.paymentCode;
+    });
 
-    // Display pagination
-    displayPagination(data);
-  }
+      // Display pagination
+      displayPagination(data);
+    }
 
     // Display pagination
     function displayPagination(pagingData) {
