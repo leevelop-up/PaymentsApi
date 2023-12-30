@@ -25,7 +25,7 @@ public class AuthService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final JavaMailSender javaMailSender;
-
+  
     public CommonDto companyCheck(Integer companyNo) {
 
         Optional<Company> companyChecking = companyRepository.findBycompanyCode(companyNo);
@@ -72,6 +72,7 @@ public class AuthService {
         List<Integer> randomValues = generateRandomNumbers(5);
 
         if (userRepository.existsByuserId(userId)) {
+
             StateMsg = "동일한 아이디가 있습니다.";
         } else {
             User userInfo = User.builder()
@@ -84,7 +85,8 @@ public class AuthService {
                     .joinDate(now)
                     .build();
             userRepository.save(userInfo);
-            StateMsg = "임시 비밀번호" + randomValues;
+            StateMsg = "임시 비밀번호"+randomValues.toString();
+        }
 
             SimpleMailMessage simpleMailMessage = new SimpleMailMessage();
             simpleMailMessage.setTo(userId);
