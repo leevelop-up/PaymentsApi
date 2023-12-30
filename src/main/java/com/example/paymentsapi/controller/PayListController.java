@@ -1,11 +1,12 @@
 package com.example.paymentsapi.controller;
 
+import com.example.paymentsapi.repository.User.User;
 import com.example.paymentsapi.repository.order.Order;
 import com.example.paymentsapi.service.PayListService;
+import com.example.paymentsapi.web.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.web.PageableDefault;
@@ -59,5 +60,44 @@ public class PayListController {
 
         return payListService.getPayList(spec, pageable);
     }
+
+    @GetMapping("/memberlist")
+    @ResponseBody
+    public Page<UserDto> getUserList(@PageableDefault(page = 0, size = 10) Pageable pageable,
+                                     @RequestParam(required = false) String userEmail,
+                                     @RequestParam(required = false) String userName,
+                                     @RequestParam(required = false) String userRole,
+                                     @RequestParam(required = false) Integer companyCode,
+                                     @RequestParam(required = false) String userAuthState) {
+        Specification<User> spec = Specification.where(null);
+
+        if (userEmail != null && !userEmail.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("userId"), userEmail));
+        }
+
+        if (userName != null && !userName.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("userName"), userName));
+        }
+
+        if (userRole != null && !userRole.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("userRole"), userRole));
+        }
+
+        if (companyCode != null) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("companyCode"), companyCode));
+        }
+
+        if (userAuthState != null && !userAuthState.isEmpty()) {
+            spec = spec.and((root, query, criteriaBuilder) ->
+                    criteriaBuilder.equal(root.get("state"), userAuthState));
+        }
+
+        return payListService.getUserPage(spec, pageable);
+    }
+
 
 }

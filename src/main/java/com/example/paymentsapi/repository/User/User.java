@@ -2,8 +2,10 @@ package com.example.paymentsapi.repository.User;
 
 import lombok.*;
 import org.springframework.format.datetime.DateFormatter;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
 import javax.persistence.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -30,8 +32,9 @@ public class User {
     @Column(name="user_companycode")
     private Integer companyCode;
     @Column(name="user_joindate")
-    private LocalDateTime joinDate;
+    private LocalDate joinDate;
     @Column(name="user_authstate")
     private String State;
 
 }
+
