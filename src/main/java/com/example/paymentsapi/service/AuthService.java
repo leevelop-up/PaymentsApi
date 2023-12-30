@@ -25,6 +25,7 @@ public class AuthService {
     private final CompanyRepository companyRepository;
     private final UserRepository userRepository;
     private final JavaMailSender javaMailSender;
+  
     public CommonDto companyCheck(Integer companyNo) {
 
         Optional<Company> companyChecking = companyRepository.findBycompanyCode(companyNo);
@@ -36,7 +37,7 @@ public class AuthService {
                     .httpStatus(HttpStatus.OK)
                     .data("success")
                     .build();
-        }else{
+        } else {
             return CommonDto.builder()
                     .message("none")
                     .status("fail")
@@ -63,21 +64,23 @@ public class AuthService {
     }
 
     public CommonDto join(User user) {
-        String userId= user.getUserId();
-        String userName= user.getUserName();
+        String userId = user.getUserId();
+        String userName = user.getUserName();
         LocalDateTime now = LocalDateTime.now();
         String StateMsg = "성공";
 
         List<Integer> randomValues = generateRandomNumbers(5);
 
-        if(userRepository.existsByuserId(userId)){
+        if (userRepository.existsByuserId(userId)) {
+
             StateMsg = "동일한 아이디가 있습니다.";
-        }else{
-            User userInfo =User.builder()
+        } else {
+            User userInfo = User.builder()
                     .userId(userId)
                     .companyCode(user.getCompanyCode())
                     .passWord(randomValues.toString())
                     .userName(userName)
+                    .State("N")
                     .userRole("USER")
                     .joinDate(now)
                     .build();
@@ -92,11 +95,10 @@ public class AuthService {
             simpleMailMessage.setText("임시비밀번호");
             javaMailSender.send(simpleMailMessage);
         }
-
         return CommonDto.builder()
                 .message(StateMsg)
-                .status("success")
-                .httpStatus(HttpStatus.OK)
+                .status("fail")
+                .httpStatus(HttpStatus.BAD_REQUEST)
                 .data("none")
                 .build();
     }

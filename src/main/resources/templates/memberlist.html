@@ -163,13 +163,13 @@
   <h4 style="text-align: center;padding-bottom: 29px;">회원 가입</h4>
   <div id="regiTable">
     <div class="regiDiv">이메일 : <input type="text" id="RegisterEmail" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;"></div>
-    <div class="regiDiv companyNo">회사코드 : <input type="text" id="RegisterCompanyCode" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;"></div>
+    <div class="regiDiv companyNo">회사코드 : <input type="text" id="RegisterCompanyCode" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;">  <button type="button" onclick="CheckCompany()" style="background-color: #3498db; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">확인</button></div>
     <div class="regiDiv companyNone">회사명 : <input type="text" id="RegisterCompanyName" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;"></div>
 
 
     <div class="regiDiv">사용자명 : <input type="text" id="RegisterName" style="padding: 8px; border: 1px solid #ccc; border-radius: 5px;"></div>
     <div class="regiDiv">
-      <button onclick="InsertUser()" style="background-color: #3498db; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">가입</button>
+      <button onclick="InsertMember()" style="background-color: #3498db; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">가입</button>
       <button onclick="$('#PopRegister').hide();" style="background-color: #95a5a6; color: white; padding: 7px 15px; border: none; border-radius: 5px; cursor: pointer;">취소</button>
     </div>
   </div>
@@ -181,10 +181,7 @@
     // 여기에 검색 기능을 구현하세요.
     // 검색 결과를 동적으로 업데이트하고, 페이징 기능을 구현하세요.
   }
-  function InsertUser(){
-// 보낼 데이터 객체
-
-
+  function CheckCompany(){
     // AJAX POST 요청
     $.ajax({
       type: 'POST',
@@ -196,6 +193,7 @@
         $("#RegisterCompanyCode").css("border"," 1px solid #ccc");
 
         $(".companyNone").show();
+        InsertMember();
       },
       error: function (error) {
 
@@ -208,7 +206,29 @@
         console.error('에러 내용:', error);
       }
     });
+  }
 
+  function InsertMember(){
+    // 보낼 데이터 객체
+    var orderData = {
+      "userId": document.getElementById('RegisterEmail').value,
+      "companyCode": document.getElementById('RegisterCompanyCode').value,
+      "userName": document.getElementById('RegisterName').value,
 
+    };
+
+    $.ajax({
+      type: 'POST',
+      url: '/api/member/join', // 요청 보낼 URL
+      contentType: 'application/json', // 데이터 타입
+      data: JSON.stringify(orderData), // 데이터 전송
+      success: function (response) {
+        alert(response);
+      },
+      error: function (error) {
+        console.error('주문 처리 중 오류가 발생했습니다.');
+        console.error('에러 내용:', error);
+      }
+    });
   }
 </script>

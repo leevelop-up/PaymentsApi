@@ -31,6 +31,7 @@ public class User {
     private Integer companyCode;
     @Column(name="user_joindate")
     private LocalDateTime joinDate;
-
+    @Column(name="user_authstate")
+    private String State;
 
 }

@@ -36,12 +36,13 @@ public class AuthController {
         return ResponseEntity.status(joinMember.getHttpStatus()).body(result);
     }
 
-    @ApiOperation("로그인")
-    @PostMapping("/login")
-    public ResponseEntity<String> loginMember(@RequestBody User user){
-        ResultDto<Void> result  = ResultDto.in(joinMember.getStatus(), joinMember.getMessage());
-        return ResponseEntity.status(joinMember.getHttpStatus()).body(result);
-    }
+//    @ApiOperation("로그인")
+//    @PostMapping("/login")
+//    public ResponseEntity<String> loginMember(@RequestBody User user){
+//        CommonDto joinMember = authService.join(user);
+//        ResultDto<Void> result  = ResultDto.in(user.getStatus(), user.getMessage());
+//        return ResponseEntity.status(user.getHttpStatus()).body(result);
+//    }
 
 
 
