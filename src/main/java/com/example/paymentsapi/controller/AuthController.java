@@ -46,7 +46,7 @@ public class AuthController {
 
         //String token = authService.login(loginRequest);
         //httpServletResponse.setHeader("X-AUTH-TOKEN",token);
-        System.out.println(login.getUserid());
+
         return authService.login(login,httpServletResponse);
     }
 

@@ -30,6 +30,12 @@ public class SecurityConfiguration {
                 .headers().frameOptions().sameOrigin()
                 .and()
                 .formLogin().disable()
+                //.loginProcessingUrl("/auth/loginProc")
+                //.successHandler(authenticationSuccessHandler) // 꼭 추가해주세요!
+//                .logout()
+//                .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout"))
+//                .invalidateHttpSession(true).deleteCookies("JSESSIONID")
+//                .logoutSuccessUrl("/")
                 .csrf().disable() // 쿠키 기반이 아닌 JWT 기반이므로 사용하지 않음
                 .cors().configurationSource(corsConfigurationSource()).and()
                 .httpBasic().disable() // ID, Password 문자열을 Base64로 인코딩하여 전달하는 구조
@@ -37,7 +43,7 @@ public class SecurityConfiguration {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)// Spring Security 세션 정책 : 세션을 생성 및 사용하지 않음
                 .and()
                 .authorizeRequests()// 조건별로 요청 허용/제한 설정
-                .antMatchers("/api/login", "/api/member", "/home","/api/order/**", "/swagger-resources/**").permitAll() // 로그인 및 회원가입은 모든 사용자에게 허용
+                .antMatchers("/api/login", "/api/member", "/home", "/api/order/**", "/swagger-resources/**").permitAll() // 로그인 및 회원가입은 모든 사용자에게 허용
                 //.antMatchers("/api/manage/**").hasRole("ADMIN") // /api/manage는 ADMIN 권한 필요
                 .antMatchers("/api/service/**").hasAnyRole("USER", "ADMIN") // /api/service로 시작하는 모든 URL은 USER 및 ADMIN 권한 필요
                 //.anyRequest().authenticated() // 나머지 요청은 인증 필요

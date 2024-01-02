@@ -15,8 +15,8 @@ import java.util.List;
 @ToString
 public class CustomerUserDetails implements UserDetails {
 
-    private String userId;
-    private String email;
+
+    private String userid;
     private String password;
     private List<SimpleGrantedAuthority> authorities;
 
@@ -33,8 +33,9 @@ public class CustomerUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return this.email;
+        return null;
     }
+
 
     @Override
     public boolean isAccountNonExpired() {
