@@ -26,8 +26,7 @@ public class CustomUserDetailService implements UserDetailsService {
 
         User user = userRepository.findByUserId(email).orElseThrow(()-> new NotFoundException("email에 해당하는 회원이 없습니다."));
         CustomerUserDetails customerUserDetails = CustomerUserDetails.builder()
-                .userId(user.getUserId())
-
+                .userid(user.getUserId())
                 .authorities(Collections.singletonList(new SimpleGrantedAuthority("role")))
                 .password(user.getPassWord()).build();
 

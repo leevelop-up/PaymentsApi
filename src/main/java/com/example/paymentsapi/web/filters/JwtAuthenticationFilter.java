@@ -30,7 +30,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         Enumeration<String> headerNames = request.getHeaderNames();
         headerNames.asIterator().forEachRemaining(headerName -> {
             //System.out.println(headerName + ": " + request.getHeader(headerName));
-            //logger.info(request.getHeader(headerName));
+            logger.info(request.getHeader(headerName));
         });
 
         String token = resolveToken(request);

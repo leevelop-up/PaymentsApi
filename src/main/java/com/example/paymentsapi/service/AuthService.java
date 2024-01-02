@@ -24,12 +24,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 @RequiredArgsConstructor
 @Service
@@ -101,7 +103,7 @@ public class AuthService {
             User userInfo = User.builder()
                     .userId(userId)
                     .companyCode(user.getCompanyCode())
-                    .passWord(randomValues)
+                    .passWord(passwordEncoder.encode(randomValues))
                     .userName(userName)
                     .State("N")
                     .userRole("USER")
@@ -114,7 +116,7 @@ public class AuthService {
             simpleMailMessage.setTo(userId);
             simpleMailMessage.setSubject("임시비밀번호 발급");
             simpleMailMessage.setFrom("merong0075@gmail.com");
-            simpleMailMessage.setText("임시비밀번호");
+            simpleMailMessage.setText(StateMsg);
             javaMailSender.send(simpleMailMessage);
         }
 
@@ -130,7 +132,6 @@ public class AuthService {
     public ResponseEntity<?> login(Login login, HttpServletResponse httpServletResponse) throws NotAcceptException {
         String userid = login.getUserid();
         String password = login.getPassword();
-
         try {
             Authentication authentication = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userid,password)
@@ -144,14 +145,19 @@ public class AuthService {
             //TODO:토큰 비교후 아이디 추출 하는 함수 하나로 만들기
             UserResponseDto.TokenInfo tokenInfo = jwtTokenProvider.createToken(authentication);
             httpServletResponse.addHeader("Authorization","Bearer "+tokenInfo.getAccessToken());
-
+            System.out.println(tokenInfo.getAccessToken());
+            Cookie cookie = new Cookie("JWT-TOKEN", tokenInfo.getAccessToken());
+            cookie.setSecure(true); // HTTPS만을 허용
+            cookie.setHttpOnly(true); // JavaScript에서 접근 불가
+            cookie.setMaxAge((int) TimeUnit.DAYS.toSeconds(7)); // 쿠키 만료 기간 설정 (예: 7일)
+            httpServletResponse.addCookie(cookie);
 //            redisTemplate.opsForValue()
 //                    .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);
             return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
 
         }catch (Exception e){
             e.printStackTrace();
-            throw new NotAcceptException("로그인에 실패했습니다.");
+            throw new NotAcceptException("로그인1에 실패했습니다.");
         }
     }
 }
