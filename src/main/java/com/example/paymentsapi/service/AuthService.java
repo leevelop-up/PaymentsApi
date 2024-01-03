@@ -149,7 +149,8 @@ public class AuthService {
             Cookie cookie = new Cookie("JWT-TOKEN", tokenInfo.getAccessToken());
             cookie.setSecure(true); // HTTPS만을 허용
             cookie.setHttpOnly(true); // JavaScript에서 접근 불가
-            cookie.setMaxAge((int) TimeUnit.DAYS.toSeconds(7)); // 쿠키 만료 기간 설정 (예: 7일)
+            cookie.setMaxAge((int) TimeUnit.MINUTES.toSeconds(5)); // 쿠키 만료 기간 설정 (예: 7일)
+            cookie.setPath("/");
             httpServletResponse.addCookie(cookie);
 //            redisTemplate.opsForValue()
 //                    .set("RT:" + authentication.getName(), tokenInfo.getRefreshToken(), tokenInfo.getRefreshTokenExpirationTime(), TimeUnit.MILLISECONDS);

@@ -360,3 +360,11 @@ a{
     text-decoration: none;
     text-align: left;
 }
+
+
+.category{
+    display:inline-flex;
+}
+.hoverable-div{
+    padding-right: 40px;
+}
