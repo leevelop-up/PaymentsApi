@@ -2,13 +2,14 @@ package com.example.paymentsapi.web.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
 
-import javax.persistence.Column;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+
 @Builder
 @Getter
+@Data
 @AllArgsConstructor
 public class UserDto {
 
@@ -22,4 +23,6 @@ public class UserDto {
 
     private LocalDate joinDate;
     private String State;
+
+    private CompanyDto companyDto;  // 기존에 추가한 CompanyDto 필드
 }

@@ -85,19 +85,15 @@
 <body>
   <div class=e1_3>
     <div class=e1_573>
-      <div class=e1_574>
-      </div>
-      <div class=e1_586>
-        <div class="e1_587">
-          <div class="e1_588 hoverable-div"><span class="e1_589"><a href="/main">Api 사용</a></span></div>
-          <div class="e1_590 hoverable-div"><span class="e1_591"><a href="/paylist">결제 내역</a></span></div>
-          <div class="e1_592 hoverable-div"><span class="e1_593"><a href="/memberlist">회원 등록/관리</a></span></div>
-          <div class="e1_594 hoverable-div"><span class="e1_595"><a href="/accountlist">정산 시스템</a></span></div>
-          <div class="e1_596 hoverable-div"><span class="e1_597"><a href="/develop">개발자센터</a></span></div>
+      <div class="">
+        <div class="category">
+          <div class=" hoverable-div"><span class=""><a href="/main">Api 사용</a></span></div>
+          <div class=" hoverable-div"><span class=""><a href="/paylist">결제 내역</a></span></div>
+          <div class=" hoverable-div"><span class=""><a href="/memberlist">회원 등록/관리</a></span></div>
+          <div class=" hoverable-div"><span class=""><a href="/develop">개발자센터</a></span></div>
         </div>
-        <div class=e1_598>
-          <div class=e1_599><span  class="e1_600">결제내역 확인</span></div>
-          <div class=e1_601><span  class="e1_602"><a href="/login">로그인</a></span></div>
+        <div class="category">
+          <div class=><span  class=""><a href="/login">로그인</a></span></div>
         </div>
       </div>
     </div>
@@ -137,6 +133,7 @@
                 <th>사용자 ID</th>
                 <th>사용자 이름</th>
                 <th>회사 코드</th>
+                <th>회사명</th>
                 <th>회원 등급</th>
                 <th>가입 유무</th>
                 <th>가입 날짜</th>
@@ -243,9 +240,10 @@
       row.insertCell(0).textContent = user.userId; // Assuming user.id is the identifier for the payment
       row.insertCell(1).textContent = user.userName;
       row.insertCell(2).textContent = user.companyCode;
-      row.insertCell(3).textContent = user.userRole;
-      row.insertCell(4).textContent = user.state;
-      row.insertCell(5).textContent = user.joinDate;
+      row.insertCell(3).textContent = user.companyDto.companyName;
+      row.insertCell(4).textContent = user.userRole;
+      row.insertCell(5).textContent = user.state;
+      row.insertCell(6).textContent = user.joinDate;
 
     });
 
