@@ -23,38 +23,33 @@ import java.util.stream.Collectors;
 public class PayListService {
     private final OrderRepository orderRepository;
     private final UserRepository userRepository;
-    private final CompanyRepository companyRepository;
+    private final CustomUserDetailService customUserDetailService;
     public Page<Order> getPayList(Specification<Order> spec, Pageable pageable) {
 
         return orderRepository.findAll(spec,pageable);
     }
 
-
     public Page<UserDto> getUserPage(Specification<User> spec, Pageable pageable) {
         Page<User> userPage = userRepository.findAll(spec, pageable);
         List<UserDto> userDtoList = userPage.getContent().stream()
-                .map(user -> {
-                    Company company = companyRepository.findByCompanyCode(user.getCompanyCode());
-                    return new UserDto(
-                            user.getUserId(),
-                            user.getUserName(),
-                            user.getUserRole(),
-                            user.getCompanyCode(),
-                            user.getJoinDate(),
-                            user.getState(),
-                            new CompanyDto(
-                                    company.getCompanyCode(),
-                                    company.getCompanyName(),
-                                    company.getJoinDate()
-                            )
-                    );
-                })
+                .map(this::convertToUserDto) // 별도의 메서드로 분리
                 .collect(Collectors.toList());
-
 
         return new PageImpl<>(userDtoList, pageable, userPage.getTotalElements());
     }
 
+    private UserDto convertToUserDto(User user) {
+        CompanyDto companyDto = customUserDetailService.getCompanyDtoByCode(user.getCompanyCode());
+        return new UserDto(
+                user.getUserId(),
+                user.getUserName(),
+                user.getUserRole(),
+                user.getCompanyCode(),
+                user.getJoinDate(),
+                user.getState(),
+                companyDto
+        );
+    }
 
 
 

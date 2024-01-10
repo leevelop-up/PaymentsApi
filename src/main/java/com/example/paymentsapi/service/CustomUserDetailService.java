@@ -2,8 +2,12 @@ package com.example.paymentsapi.service;
 
 import com.example.paymentsapi.repository.User.User;
 import com.example.paymentsapi.repository.User.UserRepository;
+import com.example.paymentsapi.repository.company.Company;
+import com.example.paymentsapi.repository.company.CompanyRepository;
 import com.example.paymentsapi.repository.userDetails.CustomerUserDetails;
 import com.example.paymentsapi.service.exception.NotFoundException;
+import com.example.paymentsapi.web.dto.CompanyDto;
+import io.swagger.models.auth.In;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,7 +24,7 @@ import java.util.Collections;
 public class CustomUserDetailService implements UserDetailsService {
 
     private final UserRepository userRepository;
-
+    private final CompanyRepository companyRepository;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
@@ -31,5 +35,16 @@ public class CustomUserDetailService implements UserDetailsService {
                 .password(user.getPassWord()).build();
 
         return customerUserDetails;
+    }
+
+
+
+    public CompanyDto getCompanyDtoByCode(Integer companyCode) {
+        Company company = companyRepository.findByCompanyCode(companyCode);
+        return new CompanyDto(
+                company.getCompanyCode(),
+                company.getCompanyName(),
+                company.getJoinDate()
+        );
     }
 }
